@@ -1,9 +1,24 @@
 \BOOKMARK [1][-]{section.1}{引言}{}% 1
-\BOOKMARK [1][-]{section.2}{Examples\040of\040Article\040Components}{}% 2
-\BOOKMARK [1][-]{section.3}{Figures\040and\040Tables}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Sample\040Figure}{section.3}% 4
-\BOOKMARK [2][-]{subsection.3.2}{Sample\040Table}{section.3}% 5
-\BOOKMARK [1][-]{section.4}{Sample\040Equation}{}% 6
-\BOOKMARK [1][-]{section.5}{Sample\040Algorithm}{}% 7
-\BOOKMARK [1][-]{section.6}{Supplemental\040Material}{}% 8
-\BOOKMARK [2][-]{subsection.6.1}{Sample\040Code\040Citation}{section.6}% 9
+\BOOKMARK [1][-]{section.2}{游戏规则说明}{}% 2
+\BOOKMARK [1][-]{section.3}{问题}{}% 3
+\BOOKMARK [1][-]{section.4}{基本的MCTS}{}% 4
+\BOOKMARK [1][-]{section.5}{扩展多人对弈的问题}{}% 5
+\BOOKMARK [2][-]{subsection.5.1}{ 合作与对抗}{section.5}% 6
+\BOOKMARK [2][-]{subsection.5.2}{ 要求搜索深度、广度的增加}{section.5}% 7
+\BOOKMARK [1][-]{section.6}{对MCTS的改变}{}% 8
+\BOOKMARK [2][-]{subsection.6.1}{ 状态向量化反传MCTSMPG}{section.6}% 9
+\BOOKMARK [2][-]{subsection.6.2}{ Selection的Policy改变}{section.6}% 10
+\BOOKMARK [2][-]{subsection.6.3}{添加合理的剪枝策略}{section.6}% 11
+\BOOKMARK [2][-]{subsection.6.4}{合并迭代的搜索树}{section.6}% 12
+\BOOKMARK [2][-]{subsection.6.5}{三种方法共同运用时的分析}{section.6}% 13
+\BOOKMARK [1][-]{section.7}{失败的改进尝试}{}% 14
+\BOOKMARK [2][-]{subsection.7.1}{按照随机次数来衰减模拟结果}{section.7}% 15
+\BOOKMARK [2][-]{subsection.7.2}{非确定性剪枝}{section.7}% 16
+\BOOKMARK [1][-]{section.8}{实验}{}% 17
+\BOOKMARK [2][-]{subsection.8.1}{具体实现&环境}{section.8}% 18
+\BOOKMARK [2][-]{subsection.8.2}{测试数据&结果}{section.8}% 19
+\BOOKMARK [1][-]{section.9}{结论}{}% 20
+\BOOKMARK [1][-]{section.10}{其他的想法}{}% 21
+\BOOKMARK [1][-]{section.11}{Figures\040and\040Tables}{}% 22
+\BOOKMARK [2][-]{subsection.11.1}{Sample\040Figure}{section.11}% 23
+\BOOKMARK [2][-]{subsection.11.2}{Sample\040Table}{section.11}% 24

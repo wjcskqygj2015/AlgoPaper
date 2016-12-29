@@ -151,8 +151,10 @@
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0pt}% % No footer rule
 
+
 % Section/subsection/paragraph set-up
 \RequirePackage[explicit]{titlesec}
+\usepackage{comment}
 \renewcommand{\thesubsection}{\Alph{subsection}}
 
 \titleformat{\section}
@@ -169,7 +171,7 @@
   []
 \titleformat{\subsection}
   {\sffamily\bfseries}
-  {\thesubsection.}
+  {\thesubsection}
   {0.5em}
   {#1}
   []
@@ -185,8 +187,8 @@
   {0em}
   {#1}
 \titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
-\titlespacing*{\subsection}{0pc}{2.5ex \@plus3pt \@minus2pt}{2pt}
-\titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{2pt}
+\titlespacing*{\subsection}{1pc}{2.5ex \@plus3pt \@minus2pt}{2pt}
+\titlespacing*{\subsubsection}{2pc}{2ex \@plus2.5pt \@minus1.5pt}{2pt}
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{12pt}
 
 
