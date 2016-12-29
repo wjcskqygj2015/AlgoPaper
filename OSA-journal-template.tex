@@ -113,10 +113,36 @@
 \begin{adjustwidth}{2em}{}
 	\ \ \ \ \
 	
+	三人游戏中，并不简单的存在着对抗的状态，而是可能会存在短暂的合作的情况，为了更好的理解这个情况，下面以一个例子来进行说明
+	
+	\begin{figure}[htbp]
+		\centering
+		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
+		\caption{关于MCTS的流程 \ 来源WIKI \cite{MCTSGraphWiki}}
+		\label{fig:false-color}
+	\end{figure}
+	
+	
+	说明内容
+	
+	
+	以上可以发现三人游戏在战略上复杂程度和二人对弈完全不一样。
+	
 \end{adjustwidth}
 \subsection{$\cdot$ 要求搜索深度、广度的增加}
 \begin{adjustwidth}{2em}{}
 	\ \ \ \ \
+	
+	因为当参与者变多的时候，如果需要考虑到自己的下两步骤的话，需要考虑剩下其他人所有的下一步应该如何落子，而有由于状态爆炸，可以明显的发现就连三人参与游戏的时候，所需要搜索的空间就应该达到原来二人对弈的200多倍才能达到所希望的智能程度，这个是难以接受的。
+	
+	下面用一个场景来更好的说明这个情况
+	
+	\begin{figure}[htbp]
+		\centering
+		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
+		\caption{关于MCTS的流程 \ 来源WIKI \cite{MCTSGraphWiki}}
+		\label{fig:false-color}
+	\end{figure}
 	
 \end{adjustwidth}
 
