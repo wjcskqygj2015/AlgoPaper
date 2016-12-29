@@ -1,0 +1,73 @@
+digraph G {
+
+	compound = true;
+
+	root_1 [label = "root(./.)"]
+	A_1 [label="A(./.)"]
+	B_1 [label="B(2/5)"]
+	C_1 [label="C(./.)"]
+	D_1 [label="D(1/2)"]
+	E_1 [label="E(?/?)"]
+	F_1 [label="F(1/3)"]
+
+	root_2 [label = "root(./.)"]
+	A_2 [label="A(./.)"]
+	B_2 [label="B(2/5)"]
+	C_2 [label="C(./.)"]
+	D_2 [label="D(1/2)"]
+	E_2 [label="E(0/0)"]
+	F_2 [label="F(2/3)"]
+	G_2 [label="EndState(1/1)"]
+
+	root_3 [label = "root(./.)"]
+	A_3 [label="A(./.)"]
+	B_3 [label="B(3/6)"]
+	C_3 [label="C(./.)"]
+	D_3 [label="D(1/2)"]
+	E_3 [label="E(0/1)"]
+	F_3 [label="F(2/3)"]
+	G_3 [label="EndState(1/1)"]
+
+	subgraph cluster1
+	{
+		state_before [shape=box]
+
+    root_1 -> A_1;
+		root_1 -> B_1;
+		root_1 -> C_1;
+		
+		B_1 -> D_1;
+		B_1 -> E_1[style=dotted,label="expansion"];
+
+		B_1 -> F_1;
+	}
+	
+	subgraph cluster2
+	{
+		state_in [shape=box]
+		root_2 -> A_2;
+		root_2 -> B_2;
+		root_2 -> C_2;
+		
+		B_2 -> D_2;
+		B_2 -> E_2[style =dotted,label="expansion"];
+		B_2 -> F_2;
+		
+		E_2 -> G_2[style = dashed, arrowsize =0.6, label= "simulation"];
+	}
+	
+	subgraph cluster3
+	{
+		state_after [shape=box]
+		root_3 -> A_3;
+		root_3 -> B_3;
+		root_3 -> C_3;
+		
+		B_3 -> D_3;
+		B_3 -> E_3;
+		B_3 -> F_3;
+		
+		E_3 -> G_3[label = "Remove other possibility"];
+	}
+	//cluster1 -> cluster2
+}

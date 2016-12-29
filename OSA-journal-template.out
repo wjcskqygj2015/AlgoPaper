@@ -15,10 +15,8 @@
 \BOOKMARK [2][-]{subsection.7.1}{按照随机次数来衰减模拟结果}{section.7}% 15
 \BOOKMARK [2][-]{subsection.7.2}{非确定性剪枝}{section.7}% 16
 \BOOKMARK [1][-]{section.8}{实验}{}% 17
-\BOOKMARK [2][-]{subsection.8.1}{具体实现&环境}{section.8}% 18
+\BOOKMARK [2][-]{subsection.8.1}{具体实现}{section.8}% 18
 \BOOKMARK [2][-]{subsection.8.2}{测试数据&结果}{section.8}% 19
-\BOOKMARK [1][-]{section.9}{结论}{}% 20
-\BOOKMARK [1][-]{section.10}{其他的想法}{}% 21
-\BOOKMARK [1][-]{section.11}{Figures\040and\040Tables}{}% 22
-\BOOKMARK [2][-]{subsection.11.1}{Sample\040Figure}{section.11}% 23
-\BOOKMARK [2][-]{subsection.11.2}{Sample\040Table}{section.11}% 24
+\BOOKMARK [2][-]{subsection.8.3}{复杂度分析}{section.8}% 20
+\BOOKMARK [1][-]{section.9}{结论}{}% 21
+\BOOKMARK [1][-]{section.10}{其他的想法}{}% 22

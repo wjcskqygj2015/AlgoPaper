@@ -2,6 +2,39 @@
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \usepackage{niceframe}
+	 \usepackage{listings}
+	 \usepackage{xcolor}
+	 \definecolor{mygreen}{rgb}{0,0.6,0}
+	 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
+	 \definecolor{mymauve}{rgb}{0.58,0,0.82}
+	 \lstset{
+	 	backgroundcolor=\color{lightgray}, 
+	 	%basicstyle = \footnotesize,  
+	 	basicstyle=\ttfamily\footnotesize, 
+	 	breakatwhitespace = false,        
+	 	breaklines = true,           
+	 	captionpos = b,                    
+	 	commentstyle = \color{mygreen}\bfseries,
+	 	extendedchars = false,             
+	 	frame =shadowbox, 
+	 	framerule=0.5pt,
+	 	belowskip=-0.8 \baselineskip,
+	 	keepspaces=true,
+	 	keywordstyle=\color{blue}\bfseries, % keyword style
+	 	language = C++,                     % the language of code
+	 	otherkeywords={string}, 
+	 	numbers=left, 
+	 	numbersep=5pt,
+	 	numberstyle=\tiny\color{mygray},
+	 	rulecolor=\color{black},         
+	 	showspaces=false,  
+	 	showstringspaces=false, 
+	 	showtabs=false,    
+	 	stepnumber=1,         
+	 	stringstyle=\color{mymauve},        % string literal style
+	 	tabsize=2,          
+	 	title=\lstname                      
+	 }
 \journal{ol} % Choose journal (ao, aop, josaa, josab, ol)
 
 % See template introduction for guidance on setting shortarticle option
@@ -11,7 +44,7 @@
 % (depending on journal).
 
 
-\title{基于多人三维五子棋对弈的蒙特卡洛树搜索算法}
+\title{基于三维五子棋对弈的多人蒙特卡洛树搜索算法}
 
 \author[1]{吴佳成}
 
@@ -117,32 +150,43 @@
 	
 	\begin{figure}[htbp]
 		\centering
-		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
-		\caption{关于MCTS的流程 \ 来源WIKI \cite{MCTSGraphWiki}}
-		\label{fig:false-color}
-	\end{figure}
+		\fbox{\includegraphics[width=\linewidth]{failureCase.eps}}
+		\caption{原始MCTS形成的局面，迭代次数1000000}
+		\label{FailureCaseStudy}
+	\end{figure}	
+	
+
+	
+	见图\ref{FailureCaseStudy}，具体遇到的问题是这样的。其中下棋初始顺序为X，O，L。起初，大家各自尽量连成线，并纷纷占据中间有利位置。然而当遇到了状态0的情况，即X首先连成三个子，而O需要进行做选择的时候。
+	
+	如果MCTS不加以改变就直接运用在多人游戏上，就会出现这样的情况。是的，种种原因，导致了该局面的发展变得似乎有些“弱智”，是的，大家都光顾着自己要连成子，却并没有去堵别人，从而导致先手必胜的结果。
+	
+		\begin{figure}[htbp]
+			\centering
+			\fbox{\includegraphics[width=\linewidth]{state.eps}}
+			\caption{比较合理的局面，迭代次数1000000}
+			\label{caseStudy}
+		\end{figure}
+	
+	一般而言，如果是双人五子棋，那很自然的就应该是去选择封住对手，否则四个子连成线还没有来赌的话，几乎是必输的。然而在这里就不一样了，比较合理的做法应该如图\ref{caseStudy}。就是O和L也应该分别先扩展自己的连子(State 1, State 2)，一方面增大自己连成子的数目，另外一方面也让自己占据的棋盘的自由空间较多。接下来X继续下第四招形成四连子(State 3)。这时候剩下的两方应该合力将其围堵(State 4, State 5)。可以说，这样的选择是明智、合理且最优的。
+	
+	当然在这更之前进行堵截也是合理的。
+	
+	因此可以发现，在合理的多人游戏中，的确会出现短暂的结盟，从而达到自己的最优化，可以看出，因为短暂的结盟的产生，L和O都在状态结束后获得了三连子。
+	
+	不过，如果继续研究的话，会立刻发现这个联盟立刻就要瓦解，同时会建立新的结盟。因为X目前是不能导致新的危机，而此时X必然会选择扩展自己的领域，再下一步就会产生新的O四联子，从而会再次导致L和X结盟。从而棋局会发展的比较复杂。
 	
 	
-	说明内容
-	
-	
-	以上可以发现三人游戏在战略上复杂程度和二人对弈完全不一样。
+	综上，可以发现三人游戏在战略上复杂程度和二人对弈完全不一样。
 	
 \end{adjustwidth}
 \subsection{$\cdot$ 要求搜索深度、广度的增加}
+
 \begin{adjustwidth}{2em}{}
 	\ \ \ \ \
+	为什么会形成这样的弱智原因呢？这边也做一下简单的分析。因为当参与者变多的时候，如果需要考虑到自己的下两步骤的话，需要考虑剩下其他人所有的下一步应该如何落子，而有由于状态爆炸，可以明显的发现就连三人参与游戏的时候，所需要搜索的空间就应该达到原来二人对弈的200多倍才能达到所希望的智能程度，这个是难以接受的。
 	
-	因为当参与者变多的时候，如果需要考虑到自己的下两步骤的话，需要考虑剩下其他人所有的下一步应该如何落子，而有由于状态爆炸，可以明显的发现就连三人参与游戏的时候，所需要搜索的空间就应该达到原来二人对弈的200多倍才能达到所希望的智能程度，这个是难以接受的。
-	
-	下面用一个场景来更好的说明这个情况
-	
-	\begin{figure}[htbp]
-		\centering
-		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
-		\caption{关于MCTS的流程 \ 来源WIKI \cite{MCTSGraphWiki}}
-		\label{fig:false-color}
-	\end{figure}
+	依然还是用之前的场景(图\ref{FailureCaseStudy})来说明这个情况。显然，基于MCTS的逻辑，在状态3的时候，O主动去探寻下一步大约有200种可能，都进行尝试，但是此时的输赢实际上关系到L的选择，因此有需要200种可能，然后之后又取决于X的选择，有存在200种可能，等探索到正确的分支已经需要200*200*200个情况，而总共迭代次数设置1000000，可能还没等探索到合适的分支就结束了，或者就是概率上探索到了该分支，也没有多少试验落到该分支。同时由于概率性的原因，还有可能X不选择必胜步骤，所以还会继续实验下去种种原因。都导致了O并不会去选择拦截X的行动，从而发生了这样的情况。
 	
 \end{adjustwidth}
 
@@ -223,17 +267,19 @@ $\mathop{argmax}\limits_i(A\cdot \dfrac{w_{ik}}{v_i}+B\cdot(1-\dfrac{\max\limits
 		修改胜负率的逻辑如下：获取下一步的移动者，将该移动者对应的胜率置为1，其他置为0。
 	\end{enumerate}
 	
+	以下的图示对以上策略进行说明，为了简便期间，只用二人对弈来说明，可以简便的推广到多人对弈。
+	
 	\begin{figure}[htbp]
 		\centering
-		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
+		\includegraphics[width=\linewidth]{policy1.eps}
 		\caption{剪枝策略1说明}
-		\label{fig:false-color}
+		\label{fig:policy1}
 	\end{figure}
 	\begin{figure}[htbp]
 		\centering
-		\fbox{\includegraphics[width=\linewidth]{MCTS.eps}}
+		\includegraphics[width=\linewidth]{policy2.eps}
 		\caption{剪枝策略2说明}
-		\label{fig:false-color}
+		\label{fig:policy2}
 	\end{figure}
 	
 	可以发现，以上两个步骤都是基于这样的逻辑:\textbf{当下一步会取得胜利的时候，有理由相信，无论是对方还是己方，一定会选择这一步}。可以说这个假设非常的朴素，但是非常有效，这也说明了一点：在增强学习中，假设对方更加聪明的同时，也让自己变得更加聪明。
@@ -313,66 +359,153 @@ $\mathop{argmax}\limits_i(A\cdot \dfrac{w_{ik}}{v_i}+B\cdot(1-\dfrac{\max\limits
 
 \section{实验}
 
-\subsection{$\cdot$具体实现\&环境}
+\subsection{$\cdot$具体实现}
 \begin{adjustwidth}{2em}{}	
 	\ \ \ \ \
+	代码主要以C++为主。
+	
 	主要代码改编于\cite{MCTSbasecode}。该代码实现了最原始版本的MCTS算法，其应用主要为双人博弈版本的connect\_four（落子只能在一维方向）的一个游戏。
 	
-	本文对该代码进行了修改，一方面
+	本文对该代码进行了修改，讲原本的代码该成了所需要的游戏逻辑，讲原本的二人对弈改成可以任意多人对弈的情形。同时将上述提到的各种思想全部加入到代码中，从而能够较好的模拟实际情况。
 	
+	值得说明的是，源代码为了能够加速运行，采用了多线程，本文的代码自然也采用了多线程，但是为了防止纠结在数据的一致性上，对于搜索树合并的行为指建立在同一个线程内，也即每轮迭代时相同编号的线程共享一个搜索树，并进行搜索树的合并。
+	
+	然后，本次代码也利用了C++模板的各种技巧，为了能够加速程序的运行，使用模板元编程技巧将各种可以编译期间常量化的数据都常量化，从而使得减少各种计算。同时也是为了更好的兼容性。
+	
+	这边对一些个人精彩的代码进行展示：
+
+	 
+\begin{lstlisting}
+template<typename State, typename = void>
+struct getSupportNumPlayers
+{
+	static const int value = 2;
+};
+	   
+template<typename State>
+struct getSupportNumPlayers<State, decltype(typename std::enable_if<std::is_integral<decltype(State::Support_Num_Players)>::value>::type())>
+{
+	static const int value = State::Support_Num_Players;
+};
+\end{lstlisting}
+以上部分代码主要在编译期间确定一个具体的模板类是否包含具体的数据成员名字，如果包含并且是指定类型的话，就使用该数据成员对应的数值，否则选取默认值。
+
+\begin{lstlisting}
+namespace CONST_STATIC_ARRAY_GENERATOR
+{
+	template<char ... args> struct ArrayHolder { static const char data[sizeof ... (args)]; };
+
+	template<char ... args>
+	const char ArrayHolder<args ...>::data[sizeof ... (args)] ={ args ... };
+
+	template<size_t N, template<size_t> class F, char ... args>
+	struct generate_array_impl { typedef typename generate_array_impl<N-1,F,F<N>::value,args...>::result result; };
+
+	template<template<size_t> class F, char ... args>
+	struct generate_array_impl<0, F, args ...> { typedef ArrayHolder<F<0>::value, args...> result; };
+
+	template<size_t N, template<size_t> class F>
+	struct generate_array { typedef typename generate_array_impl<N-1,F>::result result; };
+
+	constexpr char player_sign_map[]={'X','O','L','G','H','T','S','V','M'}; 
+
+	template<size_t index>
+	struct SignGenerator { static const char value=player_sign_map[index]; };
+}
+\end{lstlisting}	
+该段代码主要用于生成直到编译期间能够确定长度的数组。下面两行代码等价。
+\begin{lstlisting}
+CONST_STATIC_ARRAY_GENERATOR::generate_array<5,SignGenerator>::result::data;	
+char [5]={'X','O','L','G','H'};
+\end{lstlisting}
+
+可以说以上两种技巧能够用于大部分问题，在灵活性与效率之间都达到了最优。
 \end{adjustwidth}
 \subsection{$\cdot$测试数据\&结果}
 
 \begin{adjustwidth}{2em}{}	
 	\ \ \ \ \
-由于三维的比较难展示，并且比较占据篇幅，仅挑选有对比的结果进行合理的展示。	
+由于三维的比较难展示，并且比较占据篇幅，仅挑选有对比的结果进行合理的展示。
+然后为了能够更直观的展示结果，对一局对战录制了一个简单的小视频，同时还有result.txt记录了每一步的局面共参考。
+
+而下图就是之前分析所用的图，这也是改变过后的程序获得的结果，具有代表性，也是非常重要的结果，表明了该程序能够顺利解决上述提到的问题与困难。
+\begin{figure}[htbp]
+	\centering
+	\fbox{\includegraphics[width=\linewidth]{state.eps}}
+	\caption{合理的对战结果}
+	\label{result}
+\end{figure}	
+
+接下来也尝试了各种改进的组合，具体结果如下
+其中，策略分别为
+\begin{enumerate}
+	\item Selection的Policy改变
+	\item 添加合理的剪枝策略
+	\item 合并迭代的搜索树
+	\item 按照随机次数来衰减模拟结果
+\end{enumerate}
+
+而效果就是能否进行合理的比赛，所谓合理的比赛就是指不会出现上述的情况。
+因为没有办法很好的度量这个合理性，大致就以一下四个级别：
+经常不合理，有时不合理，有时合理，经常合理。（按照多次模拟之后获得实验结果进行统计获得）
+\begin{table}[htbp]
+	\centering
+	\caption{\bf 组合效果分析}
+	\begin{tabular}{cc}
+		\hline
+		组合策略 & 效果  \\
+		\hline
+		$1,2$ & 有时合理 \\
+		$1,3$ & 有时合理 \\
+		$2,3$ & 经常合理 \\
+		$1,2,3$ & 经常合理 \\
+		$1,3,4$ &　经常不合理　\\
+		$2,3,4$ & 经常不合理 \\
+		\hline
+	\end{tabular}
+	\label{tab:result1}
+\end{table}
+
+同时，由于$1,2,3$组合效果最好，之后，也对该改进MCTS算法和原来的算法进行性能上的分析。按照每下一步所需要的时间和内存来刻画。
+
+相关软硬件状态：
+\begin{itemize}
+	\item CPU:Intel® Core™ i7-6700K CPU @ 4.00GHz × 8 
+	\item Memory:31.4G
+	\item OS:Ubuntu 16.04 64bits
+\end{itemize}
+
+结果如下：
+
+\begin{table}[htbp]
+	\centering
+	\caption{\bf 组合效果分析}
+	\begin{tabular}{cccc}
+		\hline
+		策略 & time(s) & virtual(GB) & physics(GB) \\
+		\hline
+		原生MCTS & 193 & 10.6 & 10.4 \\
+		改进MCTS & 245 & 11.1 & 10.8 \\
+		\hline
+	\end{tabular}
+	\label{tab:result2}
+\end{table}
+
+当然需要注意的是：这边改进后的程序会保留每一次之前计算落子的结果，但是不用担心，因为当确认落下一子之后，其他无关的状态都会删除掉，所以不会造成内存的快速增长。
+\end{adjustwidth}
+
+\subsection{$\cdot$复杂度分析}
+\begin{adjustwidth}{2em}{}	
+	\ \ \ \ \
+	相对而言，这一类启发式类型的算法比较难进行复杂度分析，因为这一类启发式问题主要针对的解决目标就是NP-hard之上的问题，所以进行复杂度分析的意义并不是很大。	
 \end{adjustwidth}
 \section{结论}
+	本文讲MCTS推广到了多人对弈的情况，并通过具体的游戏来进行说明问题。通过一系列方法以一种教优雅的方式解决了原生MCTS推广到多人对弈的问题，能够通过较小的迭代次数来对多人博弈问题进行更优的分析。同时，值得一提的是，以上的改进方法还保持着较好的性能，改进MCTS在各种性能并没有比原生MCTS性能太差。
 
 \section{其他的想法}
 由于时间有限，因此还有一些想法并没有付诸实践，然而也一并记录于此。
 
 AlphaGo除了利用MCTS以外，还使用了CNN这类的神经网络，在选择下一步的时候，将两者的进行综合考量。然而实用CNN本身固然很合理，可以将当前局面看做类似与图像，并且具有局部性的考虑。然而个人认为依然可以添加RNN进入到该算法上，更好利用之前的信息，甚至有希望的话，可能能够考虑这一连串步骤背后的意图。
-
-\label{sec:examples}
-
-The sections below show examples of different article components.
-
-\section{Figures and Tables}
-
-It is not necessary to place figures and tables at the back of the manuscript. Figures and tables should be sized as they are to appear in the final article. Do not include a separate list of figure captions and table titles.
-
-Figures and Tables should be labelled and referenced in the standard way using the \verb|\label{}| and \verb|\ref{}| commands.
-
-\subsection{Sample Figure}
-
-Figure \ref{fig:false-color} shows an example figure.
-
-%\begin{figure}[htbp]
-%\centering
-%\fbox{\includegraphics[width=\linewidth]{sample}}
-%\caption{False-color image, where each pixel is assigned to one of seven reference spectra.}
-%\label{fig:false-color}
-%\end{figure}
-
-\subsection{Sample Table}
-
-Table \ref{tab:shape-functions} shows an example table.
-
-\begin{table}[htbp]
-\centering
-\caption{\bf Shape Functions for Quadratic Line Elements}
-\begin{tabular}{ccc}
-\hline
-local node & $\{N\}_m$ & $\{\Phi_i\}_m$ $(i=x,y,z)$ \\
-\hline
-$m = 1$ & $L_1(2L_1-1)$ & $\Phi_{i1}$ \\
-$m = 2$ & $L_2(2L_2-1)$ & $\Phi_{i2}$ \\
-$m = 3$ & $L_3=4L_1L_2$ & $\Phi_{i3}$ \\
-\hline
-\end{tabular}
-  \label{tab:shape-functions}
-\end{table}
 
 
 %Manual citation list
